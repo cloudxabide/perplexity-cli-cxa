@@ -33,12 +33,17 @@ You are a data engineer.  Please write a python script to connect to perplexity.
 ```
 
 ## Prompt using Perplexity (did work)
-`can you help me write a python to script to do the following:
-reference an ENV variable PERPLEXITY_API_TOKEN
+```
+can you help me write a python to script to do the following:
+reference an ENV variable PERPLEXITY_API_KEY 
 make a call to the perplexity AI API endpoint
-allow to set the maximum number of tokens
-allow to set the model to use for the query
-add code to ask for input parameters '-h' for help, '-l' to list available models, '-m' to accept a specifici model`
+-t to set the maximum number of tokens
+-m to set the model to use for the query
+-h to display help for this script
+-l to list available models
+create separate variables for the different parts of the API results and then print each part with a header.
+```
+
 
 -- Note:  the script opted to accept a '-q' for the prompt 'q'uery.
 
