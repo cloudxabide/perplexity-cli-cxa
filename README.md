@@ -73,7 +73,7 @@ export PERPLEXITY_API_KEY="your_api_key_here"
 
 ### Example with output
 ```bash
-/perplexity-cli-cxa-working.py -m sonar-pro -q "What is the distance between the Sun and Earth?"
+$ ./perplexity-cli-cxa-working.py -m sonar-pro -q "What is the distance between the Sun and Earth?"
 
 --- Model Used ---
 sonar-pro
@@ -99,4 +99,4 @@ num_search_queries: 1
 
 ## References
 
-The resulting script was generated with assistance from Perplexity AI. [perplexity-cli-cxa.py](./perplexity-cli-cxa.py)
+The resulting script [perplexity-cli-cxa.py](./perplexity-cli-cxa.py) was generated with assistance from Perplexity AI. 
