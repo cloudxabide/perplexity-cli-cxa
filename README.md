@@ -1,15 +1,15 @@
 # perplexity-cli-cxa
-Perplexity AI CLI Client written in Python by Perplexity to connect to Perplexity.ai to run queries.
+Perplexity AI CLI Client written in Python by Perplexity AI to connect to perplexity.ai API to run queries.
 
 I like to use CLI to interface with LLMs.  Surprisingly, Perplexity does not have their own CLI.
 
-Status: Work in Progress
+**Status:** Work in Progress
 
-I will begin working on this script to work on MacOS.  It may work the same on Linux, but I will not focus my efforts there at this time.
+I use MacOS as my daily driver and therefore have primarily focused on making this work on MacOS first.  This may work with Linux, also.
 
 ## Prerequisites
 You need to retrieve your API Key from Perplexity.ai    
-Prompt `where do I retrieve my Perplexity.ai API Key?`
+**Prompt:**  `where do I retrieve my Perplexity.ai API Key?`
 
 <pre>
 To retrieve your Perplexity.ai API Key, follow these steps:
@@ -21,7 +21,7 @@ To retrieve your Perplexity.ai API Key, follow these steps:
 Remember to keep your API key secure and treat it like a password. The API key is a long-lived access token that you can use until you manually refresh or delete it.
 </pre>
 
-Now - I do not like to simply set ENV variables with sensitive data at the command line (as it leaves a trail in .bash_history that could potentially be scraped)
+**Note/Tip** - I do not like to simply set ENV variables with sensitive data directly in my shell/terminal (as it leaves a trail in .bash_history that could potentially be scraped)
 
 You can add the following to any text file (I choose to use one of my ".bashrc" files
 ```bash
@@ -29,14 +29,15 @@ echo 'export PERPLEXITY_API_KEY="blah"' | tee -a myenvfile
 source myenvfile
 ```
 
-## Create script using prompt with Claude (did not work, but leaving as a reference)
+## Create CLI script using prompt with Claude (did not work, but leaving as a reference)
 ```bash
 You are a data engineer.  Please write a python script to connect to perplexity.ai from the macos bash shell.  The script should accept parameters 1/ list available models using '-l' 2/ use a specific model using '-m' or '--model'.  The script should read the environment variable 'PERPLEXITY_API_KEY'.  It should also accept a '-h' or '--help' to return syntax examples"
 ```
 
-## Create script using prompt with Perplexity (did work)
-```
-can you help me write a python to script to do the following:
+## Create CLI script using prompt with Perplexity (did work)
+
+```bash
+Help me write a python to script to do the following:
 reference an ENV variable PERPLEXITY_API_KEY 
 make a call to the perplexity AI API endpoint
 -t to set the maximum number of tokens
@@ -45,7 +46,7 @@ make a call to the perplexity AI API endpoint
 -l to list available models
 create separate variables for the different parts of the API results and then print each part with a header.
 ```
--- Note:  the genAI created script opted to accept a '-q' for the prompt query. (which I am cool with)
+-- Note:  the genAI created script opted to accept a '-q' for the prompt query, which I am cool with.
 
 To use this script:
 1.	Save it as `perplexity_cli.py` and make it executable with `chmod +x perplexity_cli.py`.
