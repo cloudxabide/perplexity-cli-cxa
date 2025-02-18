@@ -27,9 +27,9 @@ source myenvfile
 
 ## Create CLI script using prompt with Claude (did not work, but leaving as a reference)
 I provided the following prompt to the Perxplexity.ai App
-```bash
+<pre>
 You are a data engineer.  Please write a python script to connect to perplexity.ai from the macos bash shell.  The script should accept parameters 1/ list available models using '-l' 2/ use a specific model using '-m' or '--model'.  The script should read the environment variable 'PERPLEXITY_API_KEY'.  It should also accept a '-h' or '--help' to return syntax examples"
-```
+</pre>
 
 ## Create CLI script using prompt with Perplexity (did work)
 To create my script, I provided the following prompt to the Perxplexity.ai App
