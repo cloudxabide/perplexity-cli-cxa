@@ -1,14 +1,6 @@
 # perplexity-cli-cxa
 Perplexity AI CLI Client written in Python by Perplexity AI to connect to perplexity.ai API to run queries.
 
-I like to use CLI to interface with LLMs.  Surprisingly, Perplexity does not have their own CLI. (as of: 2025-02-17)
-
-**Status:** Work in Progress
-
-I use MacOS as my daily driver and therefore have primarily focused on making this work on MacOS first.  This may work with Linux, also.
-
-I just discovered there is a "perplexityClient Python module.
-
 ## Prerequisites
 You need to retrieve your API Key from Perplexity.ai    
 **Prompt:**  `where do I retrieve my Perplexity.ai API Key?`
@@ -96,11 +88,20 @@ citation_tokens: 5204
 num_search_queries: 1
 ```
 
-## TODO
+## Status, Notes, References
+I like to use CLI to interface with LLMs.  Surprisingly, Perplexity does not have their own CLI. (as of: 2025-02-17)
+
+**Status:** Work in Progress
+
+I use MacOS as my daily driver and therefore have primarily focused on making this work on MacOS first.  This may work with Linux, also.
+
+I just discovered there is a "perplexityClient Python module.
+
+### TODO
 * I need to learn how/when/where to attribute other work that I use.  An example: much of the actual script was created by perplexity.ai - should I provide attribution?  If so, where?
 * I would probably like to clean up the output returned by the API.  Currently (2025-02-17) the API call resturns a wide array of outputs.  
 
-## References
+### References
 [Perplexity AI - Getting Started](https://docs.perplexity.ai/guides/getting-started)  
 
 The resulting script [perplexity-cli-cxa.py](./perplexity-cli-cxa.py) was generated with assistance from Perplexity AI. 
