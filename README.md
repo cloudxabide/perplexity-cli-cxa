@@ -66,7 +66,7 @@ export PERPLEXITY_API_KEY="your_api_key_here"
 
 •	To use a specific model:
 ```bash
-./perplexity_cli.py -m model_name -p "Your prompt here"
+./perplexity_cli.py -m model_name -q "Your prompt here"
 ```
 
 •	To display help information:
