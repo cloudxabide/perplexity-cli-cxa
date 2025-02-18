@@ -101,5 +101,6 @@ num_search_queries: 1
 * I would probably like to clean up the output returned by the API.  Currently (2025-02-17) the API call resturns a wide array of outputs.  
 
 ## References
+[Perplexity AI - Getting Started](https://docs.perplexity.ai/guides/getting-started)  
 
 The resulting script [perplexity-cli-cxa.py](./perplexity-cli-cxa.py) was generated with assistance from Perplexity AI. 
