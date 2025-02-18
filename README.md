@@ -75,9 +75,13 @@ export PERPLEXITY_API_KEY="your_api_key_here"
 ```
 
 ### Example with output
+**Prompt (at command line)**
 ```bash
-$ ./perplexity-cli-cxa-working.py -m sonar-pro -q "What is the distance between the Sun and Earth?"
+./perplexity-cli-cxa-working.py -m sonar-pro -q "What is the distance between the Sun and Earth?"
+```
 
+**Results**
+```bash
 --- Model Used ---
 sonar-pro
 
