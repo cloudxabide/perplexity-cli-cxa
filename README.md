@@ -1,6 +1,8 @@
 # perplexity-cli-cxa
 Perplexity AI CLI Client written in Python by Perplexity AI to connect to perplexity.ai API to run queries.
 
+With this script and a Perplexity.ai API key, you can run queries.
+
 ## Prerequisites
 You need to retrieve your API Key from Perplexity.ai    
 **Prompt:**  `where do I retrieve my Perplexity.ai API Key?`
@@ -24,23 +26,25 @@ source myenvfile
 ```
 
 ## Create CLI script using prompt with Claude (did not work, but leaving as a reference)
+I provided the following prompt to the Perxplexity.ai App
 ```bash
 You are a data engineer.  Please write a python script to connect to perplexity.ai from the macos bash shell.  The script should accept parameters 1/ list available models using '-l' 2/ use a specific model using '-m' or '--model'.  The script should read the environment variable 'PERPLEXITY_API_KEY'.  It should also accept a '-h' or '--help' to return syntax examples"
 ```
 
 ## Create CLI script using prompt with Perplexity (did work)
-
+To create my script, I provided the following prompt to the Perxplexity.ai App
 ```bash
 Help me write a python to script to do the following:
 reference an ENV variable PERPLEXITY_API_KEY 
 make a call to the perplexity AI API endpoint
 -t to set the maximum number of tokens
 -m to set the model to use for the query
--h to display help for this script
 -l to list available models
 create separate variables for the different parts of the API results and then print each part with a header.
 ```
--- Note:  the genAI created script opted to accept a '-q' for the prompt query, which I am cool with.
+-- Note(s):  
+- The genAI created script opted to accept a '-q' for the prompt query, which I am cool with.
+- I do not inlcude "-h to display help for this script" in my prompt as python will complain when executed.
 
 To use this script:
 1.	Save it as `perplexity_cli.py` and make it executable with `chmod +x perplexity_cli.py`.
