@@ -13,9 +13,13 @@ if not API_KEY:
 BASE_URL = "https://api.perplexity.ai/chat/completions"
 
 # List of available models (can be expanded based on API documentation)
-AVAILABLE_MODELS = ["sonar-pro", "mistral-7b-instruct", "llama-2"]
+# https://docs.perplexity.ai/guides/model-cards
+# AVAILABLE_MODELS = ["sonar-pro", "mistral-7b-instruct", "llama-2"]
+AVAILABLE_MODELS = ["sonar-reasoning-pro", "sonar-reasoning", "sonar-pro", "sonar", "llama-3.1-sonar-small-128k-online", "llama-3.1-sonar-large-128k-online", "llama-3.1-sonar-huge-128k-online"]
+
 
 def list_models():
+    print("\nNote: the list of models is not dynamically retrieved from Perplexity.AI\n")
     print("Available models:")
     for model in AVAILABLE_MODELS:
         print(f"- {model}")
