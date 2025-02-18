@@ -1,5 +1,5 @@
 # perplexity-cli-cxa
-Perplexity AI CLI Client written in Python by Perplexity
+Perplexity AI CLI Client written in Python by Perplexity to connect to Perplexity.ai to run queries.
 
 Status: Work in Progress
 
@@ -27,10 +27,20 @@ echo 'export PERPLEXITY_API_KEY="blah"' | tee -a myenvfile
 source myenvfile
 ```
 
-## Prompt
+## Prompt using Claude (did not work, but leaving as a reference)
 ```bash
 You are a data engineer.  Please write a python script to connect to perplexity.ai from the macos bash shell.  The script should accept parameters 1/ list available models using '-l' 2/ use a specific model using '-m' or '--model'.  The script should read the environment variable 'PERPLEXITY_API_KEY'.  It should also accept a '-h' or '--help' to return syntax examples"
 ```
+
+## Prompt using Perplexity (did work)
+`can you help me write a python to script to do the following:
+reference an ENV variable PERPLEXITY_API_TOKEN
+make a call to the perplexity AI API endpoint
+allow to set the maximum number of tokens
+allow to set the model to use for the query
+add code to ask for input parameters '-h' for help, '-l' to list available models, '-m' to accept a specifici model`
+
+-- Note:  the script opted to accept a '-q' for the prompt 'q'uery.
 
 To use this script:
 1.	Save it as `perplexity_cli.py` and make it executable with `chmod +x perplexity_cli.py`.
@@ -39,7 +49,6 @@ To use this script:
 ```bash
 export PERPLEXITY_API_KEY="your_api_key_here"
 ```
-
 
 3.	Run the script with different options:
 •	To list available models:
@@ -58,3 +67,10 @@ export PERPLEXITY_API_KEY="your_api_key_here"
 ```
 
 This script uses the OpenAI client library, which is compatible with the Perplexity API. It reads the API key from the environment variable, lists available models, and allows you to use a specific model with a given prompt. The help option provides syntax examples for using the script.
+
+## TODO
+* I need to learn how/when/where to attribute other work that I use.  An example: much of the actual script was created by perplexity.ai - should I provide attribution?  If so, where?
+* I would probably like to clean up the output returned by the API.  Currently (2025-02-17) the API call resturns a wide array of outputs.  
+
+## References
+
