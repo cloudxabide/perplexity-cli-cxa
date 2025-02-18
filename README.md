@@ -71,7 +71,27 @@ export PERPLEXITY_API_KEY="your_api_key_here"
 ./perplexity_cli.py -h
 ```
 
-This script uses the OpenAI client library, which is compatible with the Perplexity API. It reads the API key from the environment variable, lists available models, and allows you to use a specific model with a given prompt. The help option provides syntax examples for using the script.
+### Example with output
+```bash
+/perplexity-cli-cxa-working.py -m sonar-pro -q "What is the distance between the Sun and Earth?"
+
+--- Model Used ---
+sonar-pro
+
+--- Choices ---
+Message: The average distance between the Sun and Earth is approximately 93 million miles (150 million kilometers)[1][4]. This distance is also defined as 1 Astronomical Unit (AU)[4].
+
+However, it's important to note that Earth's orbit around the Sun is not perfectly circular, but slightly elliptical. This means the actual distance varies throughout the year:
+
+1. At its closest point (perihelion), Earth is about 91.4 million miles
+
+--- Usage ---
+prompt_tokens: 16
+completion_tokens: 100
+total_tokens: 116
+citation_tokens: 5204
+num_search_queries: 1
+```
 
 ## TODO
 * I need to learn how/when/where to attribute other work that I use.  An example: much of the actual script was created by perplexity.ai - should I provide attribution?  If so, where?
