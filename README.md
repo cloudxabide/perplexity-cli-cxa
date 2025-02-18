@@ -7,6 +7,8 @@ I like to use CLI to interface with LLMs.  Surprisingly, Perplexity does not hav
 
 I use MacOS as my daily driver and therefore have primarily focused on making this work on MacOS first.  This may work with Linux, also.
 
+I just discovered there is a "perplexityClient Python module.
+
 ## Prerequisites
 You need to retrieve your API Key from Perplexity.ai    
 **Prompt:**  `where do I retrieve my Perplexity.ai API Key?`
