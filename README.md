@@ -1,7 +1,7 @@
 # perplexity-cli-cxa
 Perplexity AI CLI Client written in Python by Perplexity AI to connect to perplexity.ai API to run queries.
 
-I like to use CLI to interface with LLMs.  Surprisingly, Perplexity does not have their own CLI.
+I like to use CLI to interface with LLMs.  Surprisingly, Perplexity does not have their own CLI. (as of: 2025-02-17)
 
 **Status:** Work in Progress
 
