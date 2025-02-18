@@ -25,17 +25,7 @@ echo 'export PERPLEXITY_API_KEY="blah"' | tee -a myenvfile
 source myenvfile
 ```
 
-## Create CLI script using prompt with Claude (did not work, but leaving as a reference)
-I provided the following prompt to the Perxplexity.ai App
-<pre>
-You are a data engineer.  
-Please write a python script to connect to perplexity.ai from the macos bash shell.  
-The script should accept parameters 1/ list available models using '-l' 2/ use a specific model using '-m' or '--model'.  
-The script should read the environment variable 'PERPLEXITY_API_KEY'.  
-It should also accept a '-h' or '--help' to return syntax examples"
-</pre>
-
-## Create CLI script using prompt with Perplexity (did work)
+## Create CLI script using prompt with Perplexity 
 To create my script, I provided the following prompt to the Perxplexity.ai App
 ```bash
 Help me write a python to script to do the following:
@@ -117,3 +107,13 @@ I just discovered there is a "perplexityClient Python module.
 [Perplexity AI - Getting Started](https://docs.perplexity.ai/guides/getting-started)  
 
 The resulting script [perplexity-cli-cxa.py](./perplexity-cli-cxa.py) was generated with assistance from Perplexity AI. 
+
+### Create CLI script using prompt with Claude (did not work, but leaving as a reference)
+I provided the following prompt to the Perxplexity.ai App
+<pre>
+You are a data engineer.
+Please write a python script to connect to perplexity.ai from the macos bash shell.
+The script should accept parameters 1/ list available models using '-l' 2/ use a specific model using '-m' or '--model'.
+The script should read the environment variable 'PERPLEXITY_API_KEY'.
+It should also accept a '-h' or '--help' to return syntax examples"
+</pre>
