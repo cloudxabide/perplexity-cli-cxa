@@ -16,7 +16,7 @@ if not API_KEY:
 # Base URL for the Perplexity AI API
 BASE_URL = "https://api.perplexity.ai/chat/completions"
 
-max_tokens = "4000"
+MAX_TOKENS = "4000"
 
 # List of available models (can be expanded based on API documentation)
 # https://docs.perplexity.ai/guides/model-cards
@@ -36,7 +36,7 @@ def list_models():
     for model in AVAILABLE_MODELS:
         print(f"- {model}")
 
-def call_api(model, max_tokens, query):
+def call_api(model, MAX_TOKENS, query):
     """
     This module submits an API call the Perplexity.ai API endpoint
     """
@@ -51,7 +51,7 @@ def call_api(model, max_tokens, query):
             {"role": "system", "content": "You are an AI assistant."},
             {"role": "user", "content": query}
         ],
-        "max_tokens": max_tokens
+        "MAX_TOKENS": MAX_TOKENS
     }
 
     response = requests.post(BASE_URL, headers=headers, json=data)
