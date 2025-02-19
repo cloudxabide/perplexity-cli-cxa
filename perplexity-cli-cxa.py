@@ -12,11 +12,11 @@ if not API_KEY:
 # Base URL for the Perplexity AI API
 BASE_URL = "https://api.perplexity.ai/chat/completions"
 
+max_tokens = "4000"
+
 # List of available models (can be expanded based on API documentation)
 # https://docs.perplexity.ai/guides/model-cards
-# AVAILABLE_MODELS = ["sonar-pro", "mistral-7b-instruct", "llama-2"]
 AVAILABLE_MODELS = ["sonar-reasoning-pro", "sonar-reasoning", "sonar-pro", "sonar", "llama-3.1-sonar-small-128k-online", "llama-3.1-sonar-large-128k-online", "llama-3.1-sonar-huge-128k-online"]
-
 
 def list_models():
     print("\nNote: the list of models is not dynamically retrieved from Perplexity.AI\n")
@@ -67,7 +67,7 @@ def parse_response(response):
 def main():
     parser = argparse.ArgumentParser(description="Interact with Perplexity AI API.")
     
-    parser.add_argument("-t", "--tokens", type=int, default=100, help="Maximum number of tokens.")
+    parser.add_argument("-t", "--tokens", type=int, default=4000, help="Maximum number of tokens.")
     parser.add_argument("-m", "--model", type=str, default="sonar-pro", help="Model to use.")
     parser.add_argument("-l", "--list-models", action="store_true", help="List available models.")
     parser.add_argument("-q", "--query", type=str, required=False, help="Query to send to the API.")
