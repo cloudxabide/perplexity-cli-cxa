@@ -28,12 +28,18 @@ AVAILABLE_MODELS = [ "sonar-reasoning-pro",
   "llama-3.1-sonar-huge-128k-online" ]
 
 def list_models():
+    """
+    This modules displays a list of the available models
+    """
     print("\nNote: the list of models is not dynamically retrieved from Perplexity.AI\n")
     print("Available models:")
     for model in AVAILABLE_MODELS:
         print(f"- {model}")
 
 def call_api(model, max_tokens, query):
+    """
+    This module submits an API call the Perplexity.ai API endpoint
+    """
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Accept": "application/json",
@@ -56,6 +62,9 @@ def call_api(model, max_tokens, query):
     return response.json()
 
 def parse_response(response):
+    """
+    This module parses the API response in to variables, and then prints them
+    """
     # Extract key parts of the response
     model_used = response.get("model", "N/A")
     choices = response.get("choices", [])
@@ -74,6 +83,9 @@ def parse_response(response):
         print(f"{key}: {value}")
 
 def main():
+    """
+    This module executes the code to run
+    """
     parser = argparse.ArgumentParser(description="Interact with Perplexity AI API.")
     parser.add_argument("-t", "--tokens", type=int, default=4000, help="Maximum number of tokens.")
     parser.add_argument("-m", "--model", type=str, default="sonar-pro", help="Model to use.")
