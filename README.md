@@ -21,8 +21,10 @@ Remember to keep your API key secure and treat it like a password. The API key i
 
 You can add the following to any text file (I choose to use one of my ".bashrc" files
 ```bash
-echo 'export PERPLEXITY_API_KEY="blah"' | tee -a myenvfile
-source myenvfile
+$ vi .myenvfile
+export PERPLEXITY_API_KEY="blah"
+
+$ source .myenvfile
 ```
 
 ## Create CLI script using prompt with Perplexity 
