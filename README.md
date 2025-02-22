@@ -120,3 +120,10 @@ The script should accept parameters 1/ list available models using '-l' 2/ use a
 The script should read the environment variable 'PERPLEXITY_API_KEY'.
 It should also accept a '-h' or '--help' to return syntax examples"
 </pre>
+
+### Notes
+
+> Is it possible to query what LLMS are available for use with perxplexity.ai using an API call?
+```
+Yes, it is possible to query which LLMs are available for use with Perplexity’s API. The pplx-api allows developers to specify the model they want to use in their requests. However, there is no direct API endpoint explicitly designed to list all available models dynamically. Instead, developers must refer to documentation or announcements to know which models are supported.
+```
