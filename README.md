@@ -17,7 +17,8 @@ To retrieve your Perplexity.ai API Key, follow these steps:
 Remember to keep your API key secure and treat it like a password. The API key is a long-lived access token that you can use until you manually refresh or delete it.
 </pre>
 
-**Note/Tip** - I do not like to simply set ENV variables with sensitive data directly in my shell/terminal (as it leaves a trail in .bash_history that could potentially be scraped)
+-- **Note/Tip:**   
+I do not like to simply set ENV variables with sensitive data directly in my shell/terminal (as it leaves a trail in .bash_history that could potentially be scraped)
 
 You can add the following to any text file (I choose to use one of my ".bashrc" files
 ```bash
@@ -38,7 +39,7 @@ make a call to the perplexity AI API endpoint
 -l to list available models
 create separate variables for the different parts of the API results and then print each part with a header.
 ```
--- Note(s):  
+-- **Note(s):**  
 - The genAI created script opted to accept a '-q' for the prompt query, which I am cool with.
 - I do not inlcude "-h to display help for this script" in my prompt as python will complain when executed.
 
