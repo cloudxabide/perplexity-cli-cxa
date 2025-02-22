@@ -108,7 +108,7 @@ I just discovered there is a "perplexityClient Python module.
 ### References
 [Perplexity AI - Getting Started](https://docs.perplexity.ai/guides/getting-started)  
 
-The resulting script [perplexity-cli-cxa.py](./perplexity-cli-cxa.py) was generated with assistance from Perplexity AI. 
+The resulting script [perplexity-cli-cxa.py](./perplexity_cli_cxa.py) was generated with assistance from Perplexity AI. 
 
 ### Create CLI script using prompt with Claude (did not work, but leaving as a reference)
 I provided the following prompt to the Perxplexity.ai App
