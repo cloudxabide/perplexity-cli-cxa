@@ -20,7 +20,7 @@ Remember to keep your API key secure and treat it like a password. The API key i
 -- **Note/Tip:**   
 I do not like to simply set ENV variables with sensitive data directly in my shell/terminal (as it leaves a trail in .bash_history that could potentially be scraped)
 
-You can add the following to any text file (I choose to use one of my ".bashrc" files
+You can add the following to any text file (I choose to use one of my ".bashrc" files)
 ```bash
 $ vi ~/.bashrc.d/myperplexkey
 export PERPLEXITY_API_KEY="blah"
@@ -51,7 +51,7 @@ To use this script:
 export PERPLEXITY_API_KEY="your_api_key_here"
 ```
 
-3.	Run the script with different options:
+3.	Run the script with different options:  
 •	To list available models:
 ```bash
 ./perplexity_cli.py -l
