@@ -44,7 +44,7 @@ create separate variables for the different parts of the API results and then pr
 - I do not inlcude "-h to display help for this script" in my prompt as python will complain when executed.
 
 To use this script:
-1.	Save it as `perplexity_cli.py` and make it executable with `chmod +x perplexity_cli.py`.
+1.	Save it as `perplexity_cli_cxa.py` and make it executable with `chmod +x perplexity_cli_cxa.py`.
 2.	Set your Perplexity API key as an environment variable:
 
 ```bash
@@ -54,17 +54,17 @@ export PERPLEXITY_API_KEY="your_api_key_here"
 3.	Run the script with different options:  
 •	To list available models:
 ```bash
-./perplexity_cli.py -l
+./perplexity_cli_cxa.py -l
 ```
 
 •	To use a specific model:
 ```bash
-./perplexity_cli.py -m model_name -q "Your prompt here"
+./perplexity_cli_cxa.py -m model_name -q "Your prompt here"
 ```
 
 •	To display help information:
 ```bash
-./perplexity_cli.py -h
+./perplexity_cli_cxa.py -h
 ```
 
 ### Example with output
@@ -122,6 +122,8 @@ It should also accept a '-h' or '--help' to return syntax examples"
 </pre>
 
 ### Notes
+
+The original script name was "perplexity_cli.py" which I changed to perplexity_cli_cxa.py - as I assume there will be many perplexity_cli.py out in the wild.
 
 > Is it possible to query what LLMS are available for use with perxplexity.ai using an API call?
 ```
