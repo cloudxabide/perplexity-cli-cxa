@@ -40,7 +40,7 @@ make a call to the perplexity AI API endpoint
 create separate variables for the different parts of the API results and then print each part with a header.
 ```
 -- **Note(s):**  
-- The genAI created script opted to accept a '-q' for the prompt query, which I am cool with.
+- The genAI created script output proposed to o accept a '-q' for the prompt query, which I am cool with.
 - I do not inlcude "-h to display help for this script" in my prompt as python will complain when executed.
 
 To use this script:
