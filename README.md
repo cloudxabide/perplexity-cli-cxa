@@ -22,10 +22,10 @@ I do not like to simply set ENV variables with sensitive data directly in my she
 
 You can add the following to any text file (I choose to use one of my ".bashrc" files
 ```bash
-$ vi .myenvfile
+$ vi ~/.bashrc.d/myperplexkey
 export PERPLEXITY_API_KEY="blah"
 
-$ source .myenvfile
+$ source ~/.bashrc.d/myperplexkey
 ```
 
 ## Create CLI script using prompt with Perplexity 
