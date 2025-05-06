@@ -1,0 +1,247 @@
+Last login: Tue May  6 05:12:04 on console
+Check out my bash
+
+glados:~ jradtke$ cd Developer/Repositories/Personal/cloudxabide/perplexity-cli-cxa/
+glados:perplexity-cli-cxa jradtke$ q chat
+To learn more about MCP safety, see https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-mcp-security.html
+✓ kubernetes loaded in 1.29 s
+✓ powertools loaded in 1.56 s
+✓ awslabsaws_documentation_mcp_server loaded in 1.86 s
+✓ awslabscost_analysis_mcp_server loaded in 11.95 s
+✓ 4 of 4 mcp servers initialized
+
+Welcome to
+
+ █████╗ ███╗   ███╗ █████╗ ███████╗ ██████╗ ███╗   ██╗     ██████╗
+██╔══██╗████╗ ████║██╔══██╗╚══███╔╝██╔═══██╗████╗  ██║    ██╔═══██╗
+███████║██╔████╔██║███████║  ███╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║
+██╔══██║██║╚██╔╝██║██╔══██║ ███╔╝  ██║   ██║██║╚██╗██║    ██║▄▄ ██║
+██║  ██║██║ ╚═╝ ██║██║  ██║███████╗╚██████╔╝██║ ╚████║    ╚██████╔╝
+╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝     ╚══▀▀═╝
+
+
+
+╭───────────────────────── Did you know? ─────────────────────────╮
+│                                                                 │
+│       You can enable custom tools with MCP servers. Learn       │
+│                         more with /help                         │
+│                                                                 │
+╰─────────────────────────────────────────────────────────────────╯
+
+
+/help all commands  •  ctrl + j new lines  •  ctrl + k fuzzy search
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> review this project and make suggestions how to improve it.  Specifically, if I wanted to run my python script from a "bin" directory, such as /usr/local/bin
+
+I'll review your Perplexity CLI project and provide suggestions for improvement, particularly focusing on how to make it work from a
+system bin directory like /usr/local/bin.
+
+## Project Review
+
+Your project is a Python CLI client for the Perplexity AI API that allows users to:
+• List available models
+• Query the API with specific models
+• Control token limits
+• Display formatted results
+
+The implementation is straightforward and functional, with good documentation on setup and usage.
+
+## Improvement Suggestions
+
+### 1. Make the script executable from /usr/local/bin
+
+To run your script from /usr/local/bin or any system path directory, you need to:
+
+1. Add a proper shebang line at the top of your script:
+python
+#!/usr/bin/env python3
+
+
+2. Install the script to /usr/local/bin:
+bash
+sudo cp perplexity_cli_cxa.py /usr/local/bin/perplexity-cli
+sudo chmod +x /usr/local/bin/perplexity-cli
+
+
+3. Remove the .py extension when installing to make it feel more like a native command.
+
+### 2. Configuration file support
+
+Instead of relying solely on environment variables:
+
+python
+# Add support for a config file
+import os
+import configparser
+
+def get_api_key():
+    # Check environment variable first
+    api_key = os.environ.get("PERPLEXITY_API_KEY")
+    if api_key:
+        return api_key
+
+    # Then check config file
+    config = configparser.ConfigParser()
+    config_paths = [
+        os.path.expanduser("~/.config/perplexity/config.ini"),
+        os.path.expanduser("~/.perplexity.ini")
+    ]
+
+    for path in config_paths:
+        if os.path.exists(path):
+            config.read(path)
+            if "api" in config and "key" in config["api"]:
+                return config["api"]["key"]
+
+    return None
+
+
+### 3. Package structure
+
+Convert your script into a proper Python package:
+
+perplexity-cli/
+├── setup.py
+├── README.md
+├── perplexity_cli/
+│   ├── __init__.py
+│   ├── cli.py
+│   └── api.py
+
+
+This allows for installation via pip:
+bash
+pip install .
+
+
+### 4. Error handling improvements
+
+Add more robust error handling for API failures, rate limits, and authentication issues:
+
+python
+try:
+    response = requests.post(url, headers=headers, json=data)
+    response.raise_for_status()  # Raise exception for 4XX/5XX responses
+    return response.json()
+except requests.exceptions.HTTPError as e:
+    if e.response.status_code == 401:
+        print("Error: Invalid API key")
+    elif e.response.status_code == 429:
+        print("Error: Rate limit exceeded")
+    else:
+        print(f"HTTP Error: {e}")
+    sys.exit(1)
+except requests.exceptions.RequestException as e:
+    print(f"Request Error: {e}")
+    sys.exit(1)
+
+
+### 5. Output formatting options
+
+Add options for different output formats:
+
+python
+parser.add_argument("-f", "--format", choices=["text", "json", "markdown"],
+                    default="text", help="Output format")
+
+
+### 6. Cache results
+
+Implement a simple caching mechanism to avoid repeated identical queries:
+
+python
+import hashlib
+import json
+import os
+
+def get_cache_path(query, model):
+    query_hash = hashlib.md5(f"{query}:{model}".encode()).hexdigest()
+    cache_dir = os.path.expanduser("~/.cache/perplexity-cli")
+    os.makedirs(cache_dir, exist_ok=True)
+    return os.path.join(cache_dir, f"{query_hash}.json")
+
+def get_cached_response(query, model):
+    cache_path = get_cache_path(query, model)
+    if os.path.exists(cache_path):
+        with open(cache_path, 'r') as f:
+            return json.load(f)
+    return None
+
+def cache_response(query, model, response):
+    cache_path = get_cache_path(query, model)
+    with open(cache_path, 'w') as f:
+        json.dump(response, f)
+
+
+### 7. Add a dynamic model listing feature
+
+Since you mentioned there's no direct API endpoint to list models, you could maintain a list in your code that gets updated with
+releases:
+
+python
+def get_available_models():
+    # This could be updated with each release or fetched from a maintained source
+    return {
+        "sonar-small-chat": "Efficient model for simple queries",
+        "sonar-medium-chat": "Balanced model for most use cases",
+        "sonar-large-chat": "Advanced model for complex reasoning",
+        "sonar-pro": "Professional grade model with enhanced capabilities",
+        # Add other models as they become available
+    }
+
+
+### 8. Add a version flag
+
+python
+parser.add_argument("-v", "--version", action="version",
+                    version=f"Perplexity CLI v{__version__}")
+
+
+### 9. Implement a progress indicator for long-running queries
+
+python
+import time
+import threading
+import sys
+
+def show_spinner():
+    spinner = itertools.cycle(['-', '/', '|', '\\'])
+    while not done:
+        sys.stdout.write(next(spinner))
+        sys.stdout.flush()
+        time.sleep(0.1)
+        sys.stdout.write('\b')
+
+done = False
+spinner_thread = threading.Thread(target=show_spinner)
+spinner_thread.start()
+
+# Make API call
+response = make_api_call(...)
+
+done = True
+spinner_thread.join()
+
+
+### 10. Add a history feature
+
+Keep track of past queries and their results:
+
+python
+def save_to_history(query, model, response):
+    history_file = os.path.expanduser("~/.perplexity_history")
+    with open(history_file, "a") as f:
+        timestamp = datetime.datetime.now().isoformat()
+        entry = {
+            "timestamp": timestamp,
+            "query": query,
+            "model": model,
+            "response": response["choices"][0]["message"]["content"][:100] + "..."
+        }
+        f.write(json.dumps(entry) + "\n")
+
+
+These improvements would make your CLI tool more robust, user-friendly, and maintainable while allowing it to be installed and run
+from system directories like /usr/local/bin.
+
+>
