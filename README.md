@@ -44,33 +44,38 @@ create separate variables for the different parts of the API results and then pr
 - I do not inlcude "-h to display help for this script" in my prompt as python will complain when executed.
 
 To use this script:
-1.	Save it as `perplexity_cli_cxa.py` and make it executable with `chmod +x perplexity_cli_cxa.py`.
+1.	Save it as `perplexity_cli_cxa` and make it executable with `chmod +x perplexity_cli_cxa`.
 2.	Set your Perplexity API key as an environment variable:
 
 ```bash
 export PERPLEXITY_API_KEY="your_api_key_here"
 ```
+### Install script in to a common directory (optional)
+```bash
+sudo install -m 0755 perplexity_cli_cxa /usr/local/bin
+```
+
 
 3.	Run the script with different options:  
 •	To list available models:
 ```bash
-./perplexity_cli_cxa.py -l
+./perplexity_cli_cxa -l
 ```
 
 •	To use a specific model:
 ```bash
-./perplexity_cli_cxa.py -m model_name -q "Your prompt here"
+./perplexity_cli_cxa -m model_name -q "Your prompt here"
 ```
 
 •	To display help information:
 ```bash
-./perplexity_cli_cxa.py -h
+./perplexity_cli_cxa -h
 ```
 
 ### Example with output
 **Prompt (at command line)**
 ```bash
-./perplexity_cli_cxa.py -m sonar-pro -q "What is the distance between the Sun and Earth?"
+./perplexity_cli_cxa -m sonar-pro -q "What is the distance between the Sun and Earth?"
 ```
 
 **Results**
@@ -109,7 +114,7 @@ I just discovered there is a "perplexityClient Python module.
 ### References
 [Perplexity AI - Getting Started](https://docs.perplexity.ai/guides/getting-started)  
 
-The resulting script [perplexity_cli_cxa.py](./perplexity_cli_cxa.py) was generated with assistance from Perplexity AI. 
+The resulting script [perplexity_cli_cxa](./perplexity_cli_cxa) was generated with assistance from Perplexity AI. 
 
 ### Create CLI script using prompt with Claude (did not work, but leaving as a reference)
 I provided the following prompt to the Perxplexity.ai App
@@ -123,7 +128,7 @@ It should also accept a '-h' or '--help' to return syntax examples"
 
 ### Notes
 
-The original script name was "perplexity_cli.py" which I changed to perplexity_cli_cxa.py - as I assume there will be many perplexity_cli.py out in the wild.
+The original script name was "perplexity_cli.py" which I changed to perplexity_cli_cxa - as I assume there will be many perplexity_cli.py out in the wild.
 
 > Is it possible to query what LLMS are available for use with perxplexity.ai using an API call?
 ```
