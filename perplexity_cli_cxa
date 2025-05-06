@@ -1,50 +1,145 @@
 #!/usr/bin/env python3
 
 """
-This module contains code to connect to Perplexity.ai API
+Perplexity AI CLI Client
+
+A command-line interface for interacting with the Perplexity AI API.
+This script allows users to query Perplexity AI models and retrieve responses.
+
+Author: cloudxabide
+Repository: https://github.com/cloudxabide/perplexity-cli-cxa
 """
 
 import os
+import sys
 import argparse
+import json
+import logging
 import requests
+from typing import Dict, List, Any, Optional
+from pathlib import Path
+import configparser
 
-# Retrieve API key from environment variable
-API_KEY = os.getenv("PERPLEXITY_API_KEY")
-if not API_KEY:
-    raise EnvironmentError("PERPLEXITY_API_KEY environment variable not set.")
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+logger = logging.getLogger(__name__)
 
-# Base URL for the Perplexity AI API
+# Constants
 BASE_URL = "https://api.perplexity.ai/chat/completions"
+DEFAULT_MAX_TOKENS = 4000
+DEFAULT_MODEL = "sonar-pro"
+CONFIG_FILE = Path.home() / ".perplexity_cli_config"
 
-max_tokens = "4000"
+# List of available models (as of May 2025)
+# Reference: https://docs.perplexity.ai/guides/model-cards
+AVAILABLE_MODELS = [
+    "sonar-reasoning-pro",
+    "sonar-reasoning",
+    "sonar-pro", 
+    "sonar",
+    "llama-3.1-sonar-small-128k-online",
+    "llama-3.1-sonar-large-128k-online",
+    "llama-3.1-sonar-huge-128k-online"
+]
 
-# List of available models (can be expanded based on API documentation)
-# https://docs.perplexity.ai/guides/model-cards
-AVAILABLE_MODELS = [ "sonar-reasoning-pro",
-  "sonar-reasoning",
-  "sonar-pro", "sonar",
-  "llama-3.1-sonar-small-128k-online",
-  "llama-3.1-sonar-large-128k-online",
-  "llama-3.1-sonar-huge-128k-online" ]
 
-def list_models():
+def load_config() -> Dict[str, str]:
     """
-    This modules displays a list of the available models
+    Load configuration from config file if it exists.
+    
+    Returns:
+        Dict[str, str]: Configuration dictionary
     """
-    print("\nNote: the list of models is not dynamically retrieved from Perplexity.AI\n")
-    print("Available models:")
+    config = {}
+    config_file = Path(CONFIG_FILE)
+    
+    if config_file.exists():
+        try:
+            parser = configparser.ConfigParser()
+            parser.read(config_file)
+            
+            if "perplexity" in parser:
+                if "api_key" in parser["perplexity"]:
+                    config["api_key"] = parser["perplexity"]["api_key"]
+                if "default_model" in parser["perplexity"]:
+                    config["default_model"] = parser["perplexity"]["default_model"]
+                if "max_tokens" in parser["perplexity"]:
+                    config["max_tokens"] = parser["perplexity"]["max_tokens"]
+            
+            logger.debug("Loaded configuration from %s", config_file)
+        except Exception as e:
+            logger.warning("Failed to load config file: %s", e)
+    
+    return config
+
+
+def get_api_key() -> str:
+    """
+    Get the Perplexity API key from environment variable or config file.
+    
+    Returns:
+        str: The API key
+        
+    Raises:
+        EnvironmentError: If API key is not found
+    """
+    # First try environment variable
+    api_key = os.getenv("PERPLEXITY_API_KEY")
+    
+    # If not in environment, try config file
+    if not api_key:
+        config = load_config()
+        api_key = config.get("api_key")
+    
+    # If still not found, raise error
+    if not api_key:
+        raise EnvironmentError(
+            "PERPLEXITY_API_KEY environment variable not set and no API key found in config file.\n"
+            "Please set the environment variable or create a config file at ~/.perplexity_cli_config"
+        )
+    
+    return api_key
+
+
+def list_models() -> None:
+    """
+    Display a list of the available models.
+    """
+    print("\nAvailable Perplexity AI models:")
+    print("-------------------------------")
     for model in AVAILABLE_MODELS:
         print(f"- {model}")
+    print("\nNote: This list is maintained within the script and not dynamically retrieved from Perplexity AI.")
+    print("For the most up-to-date list, visit: https://docs.perplexity.ai/guides/model-cards")
 
-def call_api(model, max_tokens, query):
+
+def call_api(model: str, max_tokens: int, query: str) -> Dict[str, Any]:
     """
-    This module submits an API call the Perplexity.ai API endpoint
+    Submit an API call to the Perplexity.ai API endpoint.
+    
+    Args:
+        model (str): The model to use for the query
+        max_tokens (int): Maximum number of tokens for the response
+        query (str): The query to send to the API
+        
+    Returns:
+        Dict[str, Any]: The API response as a dictionary
+        
+    Raises:
+        Exception: If the API call fails
     """
+    api_key = get_api_key()
+    
     headers = {
-        "Authorization": f"Bearer {API_KEY}",
+        "Authorization": f"Bearer {api_key}",
         "Accept": "application/json",
         "Content-Type": "application/json"
     }
+    
     data = {
         "model": model,
         "messages": [
@@ -54,16 +149,33 @@ def call_api(model, max_tokens, query):
         "max_tokens": max_tokens
     }
 
-    response = requests.post(BASE_URL, headers=headers, json=data)
+    try:
+        logger.debug("Sending request to Perplexity AI API")
+        response = requests.post(BASE_URL, headers=headers, json=data, timeout=30)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        if hasattr(e, 'response') and e.response:
+            status_code = e.response.status_code
+            error_text = e.response.text
+            try:
+                error_json = e.response.json()
+                error_message = error_json.get('error', {}).get('message', error_text)
+            except:
+                error_message = error_text
+                
+            raise Exception(f"API call failed with status code {status_code}: {error_message}")
+        else:
+            raise Exception(f"API call failed: {str(e)}")
 
-    if response.status_code != 200:
-        raise Exception(f"API call failed with status code {response.status_code}: {response.text}")
 
-    return response.json()
-
-def parse_response(response):
+def parse_response(response: Dict[str, Any], verbose: bool = False) -> None:
     """
-    This module parses the API response in to variables, and then prints them
+    Parse the API response into variables and print them.
+    
+    Args:
+        response (Dict[str, Any]): The API response dictionary
+        verbose (bool): Whether to print additional details
     """
     # Extract key parts of the response
     model_used = response.get("model", "N/A")
@@ -76,36 +188,153 @@ def parse_response(response):
 
     print("\n--- Choices ---")
     for choice in choices:
-        print(f"Message: {choice.get('message', {}).get('content', 'N/A')}")
+        message = choice.get('message', {})
+        content = message.get('content', 'N/A')
+        print(f"{content}")
+        
+        # Print additional message details if verbose
+        if verbose and 'tool_calls' in message:
+            print("\n--- Tool Calls ---")
+            for tool_call in message['tool_calls']:
+                print(f"Tool: {tool_call.get('function', {}).get('name', 'N/A')}")
+                print(f"Arguments: {tool_call.get('function', {}).get('arguments', 'N/A')}")
 
     print("\n--- Usage ---")
     for key, value in usage.items():
         print(f"{key}: {value}")
+    
+    if verbose:
+        print("\n--- Full Response ---")
+        print(json.dumps(response, indent=2))
 
-def main():
-    """
-    This module executes the code to run
-    """
-    parser = argparse.ArgumentParser(description="Interact with Perplexity AI API.")
-    parser.add_argument("-t", "--tokens", type=int, default=4000, help="Maximum number of tokens.")
-    parser.add_argument("-m", "--model", type=str, default="sonar-pro", help="Model to use.")
-    parser.add_argument("-l", "--list-models", action="store_true", help="List available models.")
-    parser.add_argument("-q", "--query", type=str, required=False, help="Query to send to the API.")
 
+def save_config(api_key: Optional[str] = None, default_model: Optional[str] = None, 
+               max_tokens: Optional[int] = None) -> None:
+    """
+    Save configuration to config file.
+    
+    Args:
+        api_key (Optional[str]): API key to save
+        default_model (Optional[str]): Default model to save
+        max_tokens (Optional[int]): Default max tokens to save
+    """
+    config = configparser.ConfigParser()
+    
+    # Load existing config if it exists
+    if Path(CONFIG_FILE).exists():
+        config.read(CONFIG_FILE)
+    
+    # Ensure perplexity section exists
+    if "perplexity" not in config:
+        config["perplexity"] = {}
+    
+    # Update values if provided
+    if api_key:
+        config["perplexity"]["api_key"] = api_key
+    if default_model:
+        config["perplexity"]["default_model"] = default_model
+    if max_tokens:
+        config["perplexity"]["max_tokens"] = str(max_tokens)
+    
+    # Write config file
+    try:
+        with open(CONFIG_FILE, 'w') as f:
+            config.write(f)
+        os.chmod(CONFIG_FILE, 0o600)  # Set permissions to user read/write only
+        print(f"Configuration saved to {CONFIG_FILE}")
+    except Exception as e:
+        logger.error("Failed to save config file: %s", e)
+
+
+def main() -> None:
+    """
+    Main function to parse arguments and execute commands.
+    """
+    # Load config for default values
+    config = load_config()
+    default_model = config.get("default_model", DEFAULT_MODEL)
+    default_max_tokens = int(config.get("max_tokens", DEFAULT_MAX_TOKENS))
+    
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(
+        description="Perplexity AI CLI Client - Interact with Perplexity AI API",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  List available models:
+    %(prog)s -l
+  
+  Query using default model:
+    %(prog)s -q "What is the distance between the Sun and Earth?"
+  
+  Query using specific model:
+    %(prog)s -m sonar-pro -q "What is the distance between the Sun and Earth?"
+  
+  Set API key in config file:
+    %(prog)s --set-api-key YOUR_API_KEY
+  
+  Set default model in config file:
+    %(prog)s --set-default-model sonar-pro
+        """
+    )
+    
+    parser.add_argument("-t", "--tokens", type=int, default=default_max_tokens,
+                        help=f"Maximum number of tokens (default: {default_max_tokens})")
+    parser.add_argument("-m", "--model", type=str, default=default_model,
+                        help=f"Model to use (default: {default_model})")
+    parser.add_argument("-l", "--list-models", action="store_true",
+                        help="List available models")
+    parser.add_argument("-q", "--query", type=str,
+                        help="Query to send to the API")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                        help="Enable verbose output")
+    parser.add_argument("-d", "--debug", action="store_true",
+                        help="Enable debug logging")
+    parser.add_argument("--set-api-key", type=str,
+                        help="Set API key in config file")
+    parser.add_argument("--set-default-model", type=str,
+                        help="Set default model in config file")
+    parser.add_argument("--set-max-tokens", type=int,
+                        help="Set default max tokens in config file")
+    parser.add_argument("--version", action="version", version="%(prog)s 1.0.0")
+    
     args = parser.parse_args()
-
+    
+    # Set debug logging if requested
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
+        logger.debug("Debug logging enabled")
+    
+    # Handle configuration settings
+    if args.set_api_key or args.set_default_model or args.set_max_tokens:
+        save_config(args.set_api_key, args.set_default_model, args.set_max_tokens)
+        return
+    
+    # List models if requested
     if args.list_models:
         list_models()
         return
-
+    
+    # Validate query parameter
     if not args.query:
-        raise ValueError("A query must be provided unless listing models (-l).")
-
+        parser.print_help()
+        print("\nError: A query must be provided unless listing models (-l) or setting configuration.")
+        sys.exit(1)
+    
+    # Validate model parameter
     if args.model not in AVAILABLE_MODELS:
-        raise ValueError(f"Invalid model '{args.model}'. Use -l to list available models.")
+        print(f"Error: Invalid model '{args.model}'.")
+        list_models()
+        sys.exit(1)
+    
+    try:
+        # Call API and parse response
+        response = call_api(args.model, args.tokens, args.query)
+        parse_response(response, args.verbose)
+    except Exception as e:
+        logger.error(str(e))
+        sys.exit(1)
 
-    response = call_api(args.model, args.tokens, args.query)
-    parse_response(response)
 
 if __name__ == "__main__":
     main()
