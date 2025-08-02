@@ -1,6 +1,11 @@
 # perplexity-cli-cxa
 Perplexity AI CLI Client written in Python by Perplexity AI to connect to perplexity.ai API to run queries.
 
+NOTE:  This was my first attempt at writing this CLI - it is no longer supported, but I wanted to leave it here for posteriety and to compare what *I* can do, versus what *I and a LLM* can do ;-)
+
+Check this out, instead:  
+https://github.com/cloudxabide/perplexity-cli
+
 I have updated my approach by using Amazon Q.
 You can find that script in this repo [perplexity-cli](https://github.com/cloudxabide/perplexity-cli).
 I will likely be deleting this repo at some point.
